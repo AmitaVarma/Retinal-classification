@@ -73,19 +73,31 @@ Iopen=bwareaopen(Ibinary,100);
 subplot(2,2,4);imshow(Iopen)
 title('Morphological processing')
 
+str5='C:/Users/Amita/Desktop/Amita/Retinal Classification/Images/Processed/%d.txt';
 % MORPHOLOGICAL PROCESSING
 for i=1:tnumfiles
-    I=mydata{i};
+    I=mydata{i+1};
     Icontrast=imadjust(I);
     Ibinary=imbinarize(Icontrast,'adaptive');
     Iopen=bwareaopen(Ibinary,100);
-end
-
-% FILTERING 
-for i=1:tnumfiles
-    I=mydata{i};
-    Icontrast=adapthisteq(I);
-    I2=imgaussfilt(Icontrast,256);
+    
+    % FILTERING
+    Icontrast2=adapthisteq(I);
+    I2=imgaussfilt(Icontrast2,256);
     I3=imabsdiff(I,I2);
     I4=imabsdiff(I,I3);
+    I5=imbinarize(I4);
+    I6=imcomplement(I5);
+    
+    % FINAL IMAGE
+    Iprocessed=Iopen+I6;
+    str6=sprintf(str5,i);
+    fid = fopen(str6,'w+');
+    for j = 1:size(Iprocessed,1)
+        fprintf(fid,'%g\t',Iprocessed(j,:));
+        fprintf(fid,'\n');
+    end
+    fclose(fid)
+    
 end
+
