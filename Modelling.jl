@@ -7,6 +7,11 @@ for i =2:90
     I=Float64.(load(R[i]));
     X[i-1,:]=(vec(I))';
 end
+Y=zeros(89,1);
+for i=1:52
+    Y[i]=1.0;
+end
+
 
 n = length(vec(images[1]))
 model = Chain(Dense(n, 2, relu),softmax)
