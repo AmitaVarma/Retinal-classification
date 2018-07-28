@@ -1,7 +1,12 @@
 using Flux
 using images
 
-# code to load data from txt files
+X=zeros(89,1_728_000)
+R=readdir("/mnt/juliabox/Retinal-classification/Processed Images")
+for i =2:90
+    I=Float64.(load(R[i]));
+    X[i-1,:]=(vec(I))';
+end
 
 n = length(vec(images[1]))
 model = Chain(Dense(n, 2, relu),softmax)
